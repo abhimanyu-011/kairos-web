@@ -1,8 +1,12 @@
 ﻿# Kairos
 
-Kairos - an AI assistant created by Abhimanyu. Runs fully in the browser with transformers.js (WebGPU / WASM).
+Kairos - an AI assistant created by Abhimanyu.
 
-Static site: index.html + worker.js. Deploy on Vercel with no build step.
+Static chat page (index.html) + Vercel functions:
+- api/chat.js   - forwards messages to the Kairos server and streams the reply
+- api/health.js - shows whether the server is online
 
-Test the UI without downloading a model: open index.html?fake=1
+Vercel environment variables: KAIROS_API_URL, KAIROS_API_KEY.
+
+Test the UI without a server: open index.html?fake=1
 
