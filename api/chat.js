@@ -6,6 +6,14 @@
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 4000;
 
+// Model selector modes -> generation settings (whitelisted; the browser can't send anything else)
+const MODES = {
+  balanced: { temperature: 0.7, max_tokens: 700 },
+  precise: { temperature: 0.2, max_tokens: 700 },
+  creative: { temperature: 1.0, max_tokens: 800 },
+  quick: { temperature: 0.6, max_tokens: 250 },
+};
+
 const json = (data, status) =>
   new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json" } });
 
@@ -33,7 +41,7 @@ export async function POST(request) {
     upstream = await fetch(`${base}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({ messages, max_tokens: 700 }),
+      body: JSON.stringify({ messages, ...(MODES[body.mode] || MODES.balanced) }),
     });
   } catch {
     return json({ error: "offline" }, 503);          // machine paused or unreachable
